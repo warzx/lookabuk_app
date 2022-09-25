@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           ),
           body: Center(
             child: ListView.separated(
-              itemCount: 5,
+              itemCount: 50,
               itemBuilder: (BuildContext context, int index) {
                 return BookCardWidget();
               },
