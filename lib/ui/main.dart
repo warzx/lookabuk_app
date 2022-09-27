@@ -16,7 +16,28 @@ class MyApp extends StatelessWidget {
       home: Builder(builder: (BuildContext context) {
         return Scaffold(
           appBar: AppBar(
-            title: Text("Lookabuk"),
+            title: SizedBox(
+              child: const TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(16.0),
+                    ),
+                  ),
+                ),
+                style: TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.black,
+                ),
+              ),
+              height: 42,
+            ),
+            actions: [
+              Icon(Icons.search),
+              SizedBox(
+                width: 16,
+              ),
+            ],
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
           ),
