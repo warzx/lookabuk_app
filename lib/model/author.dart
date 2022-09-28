@@ -1,10 +1,7 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 class Author {
   String name;
 
-  Author({this.name});
+  Author({required this.name});
 
   factory Author.createAuthor(Map<String, dynamic> object) {
     return Author(

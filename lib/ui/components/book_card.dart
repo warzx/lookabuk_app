@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lookabuk_app/model/book.dart';
 
 class BookCardWidget extends StatelessWidget {
-  const BookCardWidget({Key? key}) : super(key: key);
+  final Book book;
+
+  const BookCardWidget(this.book, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +14,7 @@ class BookCardWidget extends StatelessWidget {
           width: 16,
         ),
         Image.network(
-          "https://www.gutenberg.org/cache/epub/1342/pg1342.cover.medium.jpg",
+          book.imageUrl ?? "",
           fit: BoxFit.contain,
           height: 160,
           width: 80,
@@ -22,12 +25,12 @@ class BookCardWidget extends StatelessWidget {
         Flexible(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text("Book1"),
-              SizedBox(
+            children: [
+              Text(book.title),
+              const SizedBox(
                 height: 16,
               ),
-              Text("By Samsul"),
+              Text(book.authors[0].name),
             ],
           ),
         ),
