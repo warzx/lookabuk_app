@@ -6,14 +6,18 @@ import 'package:lookabuk_app/model/book_list_result.dart';
 import 'package:lookabuk_app/ui/components/book_card.dart';
 import 'package:lookabuk_app/ui/pages/book_detail_page.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+class BookListResultPage extends StatefulWidget {
+  String apiURL;
+  String titleHeader;
+
+  BookListResultPage(this.apiURL, this.titleHeader, {Key? key})
+      : super(key: key);
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<BookListResultPage> createState() => _BookListResultPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _BookListResultPageState extends State<BookListResultPage> {
   final _scrollController = ScrollController();
   BookListResult? _result;
   List<Book> _booksResult = [];
@@ -43,30 +47,14 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: SizedBox(
-          child: const TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(16.0),
-                ),
-              ),
-            ),
-            style: TextStyle(
-              fontSize: 16.0,
-              color: Colors.black,
-            ),
-          ),
-          height: 42,
-        ),
-        actions: [
-          Icon(Icons.search),
-          SizedBox(
-            width: 16,
-          ),
-        ],
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
       ),
       body: BlocBuilder<BookListBloc, BookListResult>(
         builder: (context, result) {

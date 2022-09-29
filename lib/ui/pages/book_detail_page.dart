@@ -1,37 +1,99 @@
 import 'package:flutter/material.dart';
+import 'package:lookabuk_app/model/book.dart';
+import 'package:lookabuk_app/ui/pages/book_list_result_page.dart';
+import 'package:lookabuk_app/ui/pages/webview_page.dart';
 
 class BookDetailPage extends StatelessWidget {
-  const BookDetailPage({Key? key}) : super(key: key);
+  final Book book;
+
+  const BookDetailPage(this.book, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<String> authors = [];
+    for (var author in book.authors) {
+      authors.add(author.name);
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text("Book Detail"),
+        title: Text(book.title),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
-      body: ListView(
-        children: [
-          Container(
-            child: Image.network(
-              "https://www.gutenberg.org/cache/epub/1342/pg1342.cover.medium.jpg",
-              fit: BoxFit.scaleDown,
-              height: 400,
+      body: Center(
+        child: ListView(
+          children: [
+            Container(
+              child: Image.network(
+                book.imageUrl ?? "",
+                fit: BoxFit.scaleDown,
+                height: 400,
+              ),
+              color: Colors.black.withAlpha(20),
             ),
-            color: Colors.black.withAlpha(20),
-          ),
-          Text(
-            "Pride and Prejudice",
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                book.title,
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            if (authors.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0, top: 8.0),
+                child: TextButton(
+                  child: Text(authors.join("; ")),
+                  style: TextButton.styleFrom(
+                    textStyle: const TextStyle(fontSize: 16),
+                  ),
+                  onPressed: () {
+                    String apiURL = "";
+                    String titleHeader = "";
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            BookListResultPage(apiURL, titleHeader),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, top: 8.0),
+              child: Text(
+                "Download count: " + book.downloadCount.toString(),
+                style: const TextStyle(fontSize: 16),
+              ),
+            ),
+          ],
+        ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => WebViewPage(book.htmlUrl ?? "")),
+          );
+        },
+        isExtended: true,
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        icon: const Icon(Icons.book),
+        label: const Text('Read'),
+        backgroundColor: Colors.black,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
