@@ -26,7 +26,7 @@ class _MainPageState extends State<MainPage> {
             _scrollController.position.pixels ==
                 _scrollController.position.maxScrollExtent;
         if (atBottom) {
-          if (_result != null) {
+          if (_result != null && _result?.nextAPI != null) {
             context
                 .read<BookListBloc>()
                 .add(LoadMoreBookList(nextUrl: _result?.nextAPI ?? ""));

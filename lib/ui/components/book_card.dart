@@ -13,12 +13,24 @@ class BookCardWidget extends StatelessWidget {
         const SizedBox(
           width: 16,
         ),
-        Image.network(
-          book.imageUrl ?? "",
-          fit: BoxFit.contain,
-          height: 160,
-          width: 80,
-        ),
+        if (book.imageUrl != null) ...[
+          Image.network(
+            book.imageUrl ?? "",
+            fit: BoxFit.contain,
+            height: 160,
+            width: 80,
+          ),
+        ] else ...[
+          const SizedBox(
+            height: 160,
+            width: 80,
+            child: Center(
+              child: Icon(
+                Icons.book,
+              ),
+            ),
+          ),
+        ],
         const SizedBox(
           width: 16,
         ),

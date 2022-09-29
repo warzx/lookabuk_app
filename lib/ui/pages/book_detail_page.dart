@@ -48,26 +48,39 @@ class BookDetailPage extends StatelessWidget {
               ),
             ),
             if (authors.isNotEmpty) ...[
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 8.0),
-                child: TextButton(
-                  child: Text(authors.join("; ")),
-                  style: TextButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 16),
-                  ),
-                  onPressed: () {
-                    String apiURL = "";
-                    String titleHeader = "";
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            BookListResultPage(apiURL, titleHeader),
-                      ),
-                    );
-                  },
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0, top: 16.0),
+                child: Text(
+                  "Author(s): ",
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
+              for (var author in authors) ...[
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0, top: 4.0),
+                  child: TextButton(
+                    child: Text(authors.join("; ")),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      alignment: Alignment.centerLeft,
+                      textStyle: const TextStyle(fontSize: 16),
+                    ),
+                    onPressed: () {
+                      String apiURL =
+                          "http://gutendex.com/books/?search=" + author;
+                      String titleHeader = "Search for " + author;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              BookListResultPage(apiURL, titleHeader),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ],
             Padding(
               padding: const EdgeInsets.only(left: 16.0, top: 8.0),
@@ -76,6 +89,42 @@ class BookDetailPage extends StatelessWidget {
                 style: const TextStyle(fontSize: 16),
               ),
             ),
+            if (book.bookshelves.isNotEmpty) ...[
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0, top: 16.0),
+                child: Text(
+                  "Bookshelves: ",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+              for (var bookshelve in book.bookshelves) ...[
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0, top: 4.0),
+                  child: Text(
+                    bookshelve,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
+            ],
+            if (book.subjects.isNotEmpty) ...[
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0, top: 16.0),
+                child: Text(
+                  "Subjects: ",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+              for (var subject in book.subjects) ...[
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0, top: 4.0),
+                  child: Text(
+                    subject,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
+            ],
           ],
         ),
       ),

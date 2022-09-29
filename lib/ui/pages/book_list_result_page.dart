@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lookabuk_app/bloc/book_list_bloc.dart';
+import 'package:lookabuk_app/bloc/book_search_list_bloc.dart';
 import 'package:lookabuk_app/model/book.dart';
 import 'package:lookabuk_app/model/book_list_result.dart';
 import 'package:lookabuk_app/ui/components/book_card.dart';
 import 'package:lookabuk_app/ui/pages/book_detail_page.dart';
 
 class BookListResultPage extends StatefulWidget {
-  String apiURL;
-  String titleHeader;
+  final String apiURL;
+  final String titleHeader;
 
-  BookListResultPage(this.apiURL, this.titleHeader, {Key? key})
+  const BookListResultPage(this.apiURL, this.titleHeader, {Key? key})
       : super(key: key);
 
   @override
@@ -23,6 +23,9 @@ class _BookListResultPageState extends State<BookListResultPage> {
   List<Book> _booksResult = [];
 
   @override
+  BookListResultPage get widget => super.widget;
+
+  @override
   void initState() {
     _scrollController.addListener(() {
       if (_scrollController.position.atEdge) {
@@ -30,33 +33,36 @@ class _BookListResultPageState extends State<BookListResultPage> {
             _scrollController.position.pixels ==
                 _scrollController.position.maxScrollExtent;
         if (atBottom) {
-          if (_result != null) {
+          if (_result != null && _result?.nextAPI != null) {
             context
-                .read<BookListBloc>()
-                .add(LoadMoreBookList(nextUrl: _result?.nextAPI ?? ""));
+                .read<BookSearchListBloc>()
+                .add(LoadMoreBookSearchList(nextUrl: _result?.nextAPI ?? ""));
           }
         }
       }
     });
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(
-        (_) => context.read<BookListBloc>().add(InitalLoadBookList()));
+    WidgetsBinding.instance?.addPostFrameCallback((_) => context
+        .read<BookSearchListBloc>()
+        .add(InitalLoadBookSearchList(initialUrl: widget.apiURL)));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(widget.titleHeader),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         leading: IconButton(
           onPressed: () {
+            context.read<BookSearchListBloc>().add(ClearBookSearchList());
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
-      body: BlocBuilder<BookListBloc, BookListResult>(
+      body: BlocBuilder<BookSearchListBloc, BookListResult>(
         builder: (context, result) {
           _result = result;
           _booksResult.addAll(result.books);
