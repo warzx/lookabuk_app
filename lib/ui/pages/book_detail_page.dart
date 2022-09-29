@@ -59,7 +59,7 @@ class BookDetailPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0, top: 4.0),
                   child: TextButton(
-                    child: Text(authors.join("; ")),
+                    child: Text(author),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
