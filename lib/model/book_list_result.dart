@@ -11,11 +11,11 @@ class BookListResult {
 
   factory BookListResult.result(Map<String, dynamic> object) {
     List<Book> bookList = [];
-    if (object["results"] is List<Map<String, dynamic>>) {
-      List<Map<String, dynamic>> booksObjects = object["results"];
-      for (Map<String, dynamic> bookObject in booksObjects) {
-        bookList.add(Book.createBook(bookObject));
-      }
+
+    if (object["results"] is List<dynamic>) {
+      bookList = (object["results"] as List)
+          .map((book) => Book.createBook(book))
+          .toList();
     }
 
     return BookListResult(

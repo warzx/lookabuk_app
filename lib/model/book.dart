@@ -24,22 +24,36 @@ class Book {
 
   factory Book.createBook(Map<String, dynamic> object) {
     List<Author> authorsList = [];
-    if (object["authors"] is List<Map<String, dynamic>>) {
-      List<Map<String, dynamic>> authorsObjects = object["authors"];
-      for (Map<String, dynamic> authorObject in authorsObjects) {
-        authorsList.add(Author.createAuthor(authorObject));
-      }
+    if (object["authors"] is List<dynamic>) {
+      authorsList = (object["authors"] as List)
+          .map((author) => Author.createAuthor(author))
+          .toList();
+    }
+
+    List<String> subjects = [];
+    if (object["subjects"] is List<dynamic>) {
+      subjects = (object["subjects"] as List)
+          .map((subject) => subject as String)
+          .toList();
+    }
+
+    List<String> bookshelves = [];
+    if (object["bookshelves"] is List<dynamic>) {
+      bookshelves = (object["bookshelves"] as List)
+          .map((bookshelve) => bookshelve as String)
+          .toList();
     }
 
     String? imageUrl;
     String? htmlUrl;
-    if (object["formats"] is Map<String, String>) {
-      Map<String, String> formatsObjects = object["formats"];
+    if (object["formats"] is Map) {
+      Map<String, dynamic> formatsObjects =
+          object["formats"] as Map<String, dynamic>;
       if (formatsObjects.containsKey("image/jpeg")) {
-        imageUrl = formatsObjects["image/jpeg"];
+        imageUrl = formatsObjects["image/jpeg"] as String;
       }
       if (formatsObjects.containsKey("text/html")) {
-        htmlUrl = formatsObjects["text/html"];
+        htmlUrl = formatsObjects["text/html"] as String;
       }
     }
 
@@ -47,8 +61,8 @@ class Book {
         id: object["id"].toString(),
         title: object["title"],
         authors: authorsList,
-        subjects: object["subjects"] as List<String>,
-        bookshelves: object["bookshelves"] as List<String>,
+        subjects: subjects,
+        bookshelves: bookshelves,
         copyright: object["copyright"] as bool,
         imageUrl: imageUrl,
         htmlUrl: htmlUrl,

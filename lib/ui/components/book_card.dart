@@ -30,7 +30,7 @@ class BookCardWidget extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              Text(book.authors[0].name),
+              Text(book.authors.isNotEmpty ? book.authors[0].name : ""),
             ],
           ),
         ),
