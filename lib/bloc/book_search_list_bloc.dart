@@ -19,7 +19,7 @@ class LoadMoreBookSearchList extends BookSearchListEvent {
 class BookSearchListBloc extends Bloc<BookSearchListEvent, BookListResult> {
   BookSearchListBloc(BookListResult initialState) : super(initialState) {
     on<ClearBookSearchList>(
-        (event, emit) async => emit(BookListResult(count: 0, books: [])));
+        (event, emit) => emit(BookListResult(count: 0, books: [])));
     on<InitalLoadBookSearchList>((event, emit) async =>
         emit(await BookListAPIService.getBookListFromAPI(event.initialUrl)));
     on<LoadMoreBookSearchList>((event, emit) async =>

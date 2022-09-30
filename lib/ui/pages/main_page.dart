@@ -17,6 +17,13 @@ class _MainPageState extends State<MainPage> {
   final _scrollController = ScrollController();
   BookListResult? _result;
   List<Book> _booksResult = [];
+  FocusNode _textFieldFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _textFieldFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -44,22 +51,42 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         title: SizedBox(
-          child: const TextField(
-            decoration: InputDecoration(
+          child: TextField(
+            focusNode: _textFieldFocusNode,
+            decoration: const InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(16.0),
                 ),
               ),
             ),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0,
               color: Colors.black,
             ),
+            onChanged: (value) {
+              _result = null;
+              _booksResult = [];
+              String searchUrl =
+                  "http://gutendex.com/books/?search=" + Uri.encodeFull(value);
+              if (value.isEmpty) {
+                context.read<BookListBloc>().add(ClearBookList());
+                context.read<BookListBloc>().add(InitalLoadBookList());
+              } else {
+                context.read<BookListBloc>().add(ClearBookList());
+                context
+                    .read<BookListBloc>()
+                    .add(InitalLoadBookList(initialUrl: searchUrl));
+              }
+            },
+            onEditingComplete: () {
+              context.read<BookListBloc>().add(ClearBookList());
+              context.read<BookListBloc>().add(InitalLoadBookList());
+            },
           ),
           height: 42,
         ),
-        actions: [
+        actions: const [
           Icon(Icons.search),
           SizedBox(
             width: 16,

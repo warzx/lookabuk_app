@@ -4,7 +4,12 @@ import 'package:lookabuk_app/service/book_list_api_service.dart';
 
 abstract class BookListEvent {}
 
-class InitalLoadBookList extends BookListEvent {}
+class ClearBookList extends BookListEvent {}
+
+class InitalLoadBookList extends BookListEvent {
+  String? initialUrl;
+  InitalLoadBookList({this.initialUrl});
+}
 
 class LoadMoreBookList extends BookListEvent {
   String nextUrl;
@@ -13,9 +18,11 @@ class LoadMoreBookList extends BookListEvent {
 
 class BookListBloc extends Bloc<BookListEvent, BookListResult> {
   BookListBloc(BookListResult initialState) : super(initialState) {
+    on<ClearBookList>(
+        (event, emit) => emit(BookListResult(count: 0, books: [])));
     on<InitalLoadBookList>((event, emit) async => emit(
         await BookListAPIService.getBookListFromAPI(
-            "http://gutendex.com/books/")));
+            event.initialUrl ?? "http://gutendex.com/books/")));
     on<LoadMoreBookList>((event, emit) async =>
         emit(await BookListAPIService.getBookListFromAPI(event.nextUrl)));
   }

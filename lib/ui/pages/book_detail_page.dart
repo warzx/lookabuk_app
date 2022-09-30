@@ -67,8 +67,8 @@ class BookDetailPage extends StatelessWidget {
                       textStyle: const TextStyle(fontSize: 16),
                     ),
                     onPressed: () {
-                      String apiURL =
-                          "http://gutendex.com/books/?search=" + author;
+                      String apiURL = "http://gutendex.com/books/?search=" +
+                          Uri.encodeFull(author);
                       String titleHeader = "Search for " + author;
                       Navigator.push(
                         context,
