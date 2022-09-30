@@ -8,21 +8,18 @@
             "name": "lookabuk_app",
             "request": "launch",
             "type": "dart",
-            "program": "lib/ui/main.dart"
         },
         {
             "name": "lookabuk_app (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "program": "lib/ui/main.dart"
         },
         {
             "name": "lookabuk_app (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "program": "lib/ui/main.dart"
         }
     ]
 }
