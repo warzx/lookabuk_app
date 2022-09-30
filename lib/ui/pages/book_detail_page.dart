@@ -69,7 +69,7 @@ class BookDetailPage extends StatelessWidget {
                     onPressed: () {
                       String apiURL = "http://gutendex.com/books/?search=" +
                           Uri.encodeFull(author);
-                      String titleHeader = "Search for " + author;
+                      String titleHeader = "More by " + author;
                       Navigator.push(
                         context,
                         MaterialPageRoute(
